@@ -10,15 +10,16 @@ const OPTIONS = commandLineArgs([
 ])
 const ROOT_PATH = "m/44'/60'/0'/0/"
 const TYPES = {
-    MNEMONIC: 'mnemonic',
-    ADDRESS: 'address',
-    PRIVATE_KEY: 'private_key',
+    MNEMONIC: 'mnemonic.txt',
+    ADDRESS: 'address.txt',
+    PRIVATE_KEY: 'private_key.txt',
+    TABLE: 'table.csv',
 }
 const COUNT = OPTIONS['number'] || 20
 const FILENAME = OPTIONS['output'] || `${moment().format('YYYYMMDD_HHmmss')}`
 
 const save = function save(type, data) {
-    fs.appendFileSync(`./output/${FILENAME}_${type}.txt`, data, 'utf8')
+    fs.appendFileSync(`./output/${FILENAME}_${type}`, data, 'utf8')
 }
 
 const mnemonic = BIP39.generateMnemonic(128)
@@ -28,6 +29,7 @@ console.log(`mnemonic: ${mnemonic}\n`)
 const masterSeed = BIP39.mnemonicToSeedSync(mnemonic)
 const masterWallet = HD_KEY.fromMasterSeed(masterSeed)
 
+save(TYPES.TABLE, `Account,Address,Private Key\n`)
 for (let i = 0; i < COUNT; i++) {
     const wallet = masterWallet.derivePath(ROOT_PATH + i).getWallet()
 
@@ -36,10 +38,12 @@ for (let i = 0; i < COUNT; i++) {
 
     save(TYPES.ADDRESS, `Account${i + 1}: ${address}\n`)
     save(TYPES.PRIVATE_KEY, `Account${i + 1}: ${privateKey}\n`)
+    save(TYPES.TABLE, `${i + 1},${address},${privateKey}\n`)
     console.log(`Account${i + 1}: ${address} <= ${privateKey}`)
 }
 
 console.log(`\noutput files:`)
-console.log(`  ./output/${FILENAME}_${TYPES.MNEMONIC}.txt`)
-console.log(`  ./output/${FILENAME}_${TYPES.ADDRESS}.txt`)
-console.log(`  ./output/${FILENAME}_${TYPES.PRIVATE_KEY}.txt`)
+console.log(`  ./output/${FILENAME}_${TYPES.MNEMONIC}`)
+console.log(`  ./output/${FILENAME}_${TYPES.ADDRESS}`)
+console.log(`  ./output/${FILENAME}_${TYPES.PRIVATE_KEY}`)
+console.log(`  ./output/${FILENAME}_${TYPES.TABLE}`)
