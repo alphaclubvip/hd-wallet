@@ -18,7 +18,8 @@ $ npm install
 ## Usage
 
 ```bash
-$ node eth.js -n <number>
+$ node bulk-eth.js -n <number>
+# example: run `node bulk-eth.js -n 100` to generate 100 wallet addresses from one mnemonic
 ```
 
 
