@@ -1,3 +1,6 @@
+.idea
+output/*.txt
+
 # Logs
 logs
 *.log
