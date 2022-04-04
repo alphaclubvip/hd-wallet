@@ -4,7 +4,13 @@ Generate bulk wallets.
 
 ## Installation
 
+Plz install [Node.js](https://nodejs.org/en/) first (choose the LTS version), and [Git](https://git-scm.com/).
+
+Then open ur terminal:
+
 ```bash
+$ git clone https://github.com/web3jt/hd-wallet.git
+$ cd hd-wallet
 $ npm install
 # or `yarn`
 ```
