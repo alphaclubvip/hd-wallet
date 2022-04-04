@@ -1,5 +1,6 @@
 .idea
 output/*.txt
+output/*.csv
 
 # Logs
 logs
