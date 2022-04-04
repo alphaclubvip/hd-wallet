@@ -5,7 +5,8 @@ Generate bulk wallets.
 ## Installation
 
 ```bash
-$ npm install # or `yarn`
+$ npm install
+# or `yarn`
 ```
 
 ## Usage
