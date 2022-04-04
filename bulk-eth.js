@@ -4,42 +4,42 @@ const commandLineArgs = require('command-line-args')
 const BIP39 = require('bip39')
 const HD_KEY = require('ethereumjs-wallet').hdkey
 
-const ROOT_PATH = "m/44'/60'/0'/0/"
-
 const OPTIONS = commandLineArgs([
     {name: 'number', alias: 'n', type: Number},
     {name: 'output', alias: 'o', type: String}
 ])
-
+const ROOT_PATH = "m/44'/60'/0'/0/"
+const TYPES = {
+    MNEMONIC: 'mnemonic',
+    ADDRESS: 'address',
+    PRIVATE_KEY: 'private_key',
+}
 const COUNT = OPTIONS['number'] || 20
+const FILENAME = OPTIONS['output'] || `${moment().format('YYYYMMDD_HHmmss')}`
 
-const FILENAME = OPTIONS['output'] || `${moment().format('YYYYMMDD_HHmmss')}.txt`
-
-const save = function save(data) {
-    fs.appendFileSync(`./output/${FILENAME}`, data, 'utf8')
+const save = function save(type, data) {
+    fs.appendFileSync(`./output/${FILENAME}_${type}.txt`, data, 'utf8')
 }
 
 const mnemonic = BIP39.generateMnemonic(128)
+save(TYPES.MNEMONIC, mnemonic)
+console.log(`mnemonic: ${mnemonic}\n`)
 
-save(mnemonic + '\n\n')
-console.log(`\n${mnemonic}\n`)
-
-const seed = BIP39.mnemonicToSeedSync(mnemonic)
-
-const hdWallet = HD_KEY.fromMasterSeed(seed)
+const masterSeed = BIP39.mnemonicToSeedSync(mnemonic)
+const masterWallet = HD_KEY.fromMasterSeed(masterSeed)
 
 for (let i = 0; i < COUNT; i++) {
-    const wallet = hdWallet.derivePath(ROOT_PATH + i).getWallet()
+    const wallet = masterWallet.derivePath(ROOT_PATH + i).getWallet()
 
     const privateKey = wallet.getPrivateKeyString()
     const address = wallet.getChecksumAddressString()
 
-    const line = `Account ${i + 1}: ${address} <= ${privateKey}`
-
-    save(line + '\n')
-    console.log(line)
+    save(TYPES.ADDRESS, `Account ${i + 1}: ${address}`)
+    save(TYPES.PRIVATE_KEY, `Account ${i + 1}: ${privateKey}`)
+    console.log(`Account ${i + 1}: ${address} <= ${privateKey}`)
 }
 
-
-console.log(`\n\noutput file: ./output/${FILENAME}`)
-
+console.log(`\noutput files:`)
+console.log(`  ./output/${FILENAME}_${TYPES.MNEMONIC}.txt`)
+console.log(`  ./output/${FILENAME}_${TYPES.ADDRESS}.txt`)
+console.log(`  ./output/${FILENAME}_${TYPES.PRIVATE_KEY}.txt`)
