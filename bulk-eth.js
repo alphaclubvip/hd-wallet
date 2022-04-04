@@ -34,9 +34,9 @@ for (let i = 0; i < COUNT; i++) {
     const privateKey = wallet.getPrivateKeyString()
     const address = wallet.getChecksumAddressString()
 
-    save(TYPES.ADDRESS, `Account ${i + 1}: ${address}`)
-    save(TYPES.PRIVATE_KEY, `Account ${i + 1}: ${privateKey}`)
-    console.log(`Account ${i + 1}: ${address} <= ${privateKey}`)
+    save(TYPES.ADDRESS, `Account${i + 1}: ${address}`)
+    save(TYPES.PRIVATE_KEY, `Account${i + 1}: ${privateKey}`)
+    console.log(`Account${i + 1}: ${address} <= ${privateKey}`)
 }
 
 console.log(`\noutput files:`)
