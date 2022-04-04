@@ -34,7 +34,7 @@ for (let i = 0; i < COUNT; i++) {
     const privateKey = wallet.getPrivateKeyString()
     const address = wallet.getChecksumAddressString()
 
-    const line = `#${i}: ${address} <= ${privateKey}`
+    const line = `Account ${i + 1}: ${address} <= ${privateKey}`
 
     save(line + '\n')
     console.log(line)
